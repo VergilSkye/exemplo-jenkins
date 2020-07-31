@@ -1,0 +1,40 @@
+{
+  "generator-jhipster": {
+    "promptValues": {
+      "packageName": "dev.vergil"
+    },
+    "jhipsterVersion": "6.10.1",
+    "applicationType": "monolith",
+    "baseName": "exemplo",
+    "packageName": "dev.vergil",
+    "packageFolder": "dev/vergil",
+    "serverPort": "8080",
+    "authenticationType": "jwt",
+    "cacheProvider": "ehcache",
+    "enableHibernateCache": true,
+    "websocket": false,
+    "databaseType": "sql",
+    "devDatabaseType": "h2Disk",
+    "prodDatabaseType": "postgresql",
+    "searchEngine": false,
+    "messageBroker": false,
+    "serviceDiscoveryType": false,
+    "buildTool": "maven",
+    "enableSwaggerCodegen": false,
+    "jwtSecretKey": "MTY0NTFlN2M1ZmZmNWM1MGI5MjBhMjIxNTgwOWMxOTk5MTY3ZmRhMjNmNmFmMjk1YjU5ZmQ0NWM1MTJmYzYyNGM4MWNmNDIzYjA0ZTZjOTBmMmQ2NmU2ZDE5YTRkZjBiODBlOGI5ZTE4MzFkMjI3MjQ3Y2EzZGI2MTk1Mjg1ODk=",
+    "embeddableLaunchScript": false,
+    "useSass": true,
+    "clientPackageManager": "npm",
+    "clientFramework": "angularX",
+    "clientTheme": "none",
+    "clientThemeVariant": "",
+    "creationTimestamp": 1596203967967,
+    "testFrameworks": [],
+    "jhiPrefix": "jhi",
+    "entitySuffix": "",
+    "dtoSuffix": "DTO",
+    "otherModules": [],
+    "enableTranslation": false,
+    "blueprints": []
+  }
+}
