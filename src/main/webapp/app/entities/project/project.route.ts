@@ -64,7 +64,7 @@ export const projectRoute: Routes = [
       project: ProjectResolve,
     },
     data: {
-      authorities: [Authority.USER],
+      authorities: [Authority.ADMIN],
       pageTitle: 'Projects',
     },
     canActivate: [UserRouteAccessService],
@@ -76,7 +76,7 @@ export const projectRoute: Routes = [
       project: ProjectResolve,
     },
     data: {
-      authorities: [Authority.USER],
+      authorities: [Authority.ADMIN],
       pageTitle: 'Projects',
     },
     canActivate: [UserRouteAccessService],

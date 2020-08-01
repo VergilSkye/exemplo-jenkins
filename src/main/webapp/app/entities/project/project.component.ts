@@ -10,6 +10,8 @@ import { IProject } from 'app/shared/model/project.model';
 import { ITEMS_PER_PAGE } from 'app/shared/constants/pagination.constants';
 import { ProjectService } from './project.service';
 import { ProjectDeleteDialogComponent } from './project-delete-dialog.component';
+import {Authority} from "../../shared/constants/authority.constants";
+import {AccountService} from "../../core/auth/account.service";
 
 @Component({
   selector: 'jhi-project',
@@ -30,7 +32,8 @@ export class ProjectComponent implements OnInit, OnDestroy {
     protected activatedRoute: ActivatedRoute,
     protected router: Router,
     protected eventManager: JhiEventManager,
-    protected modalService: NgbModal
+    protected modalService: NgbModal,
+    protected accountService: AccountService
   ) {}
 
   loadPage(page?: number, dontNavigate?: boolean): void {
@@ -84,8 +87,10 @@ export class ProjectComponent implements OnInit, OnDestroy {
   }
 
   delete(project: IProject): void {
-    const modalRef = this.modalService.open(ProjectDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
-    modalRef.componentInstance.project = project;
+    if (this.accountService.hasAnyAuthority(Authority.ADMIN)) {
+      const modalRef = this.modalService.open(ProjectDeleteDialogComponent, {size: 'lg', backdrop: 'static'});
+      modalRef.componentInstance.project = project;
+    }
   }
 
   sort(): string[] {
