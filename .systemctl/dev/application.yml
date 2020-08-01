@@ -24,7 +24,10 @@
 #    export:
 #      prometheus:
 #        enabled: false
+# Properties to be exposed on the /info management
 
+info:
+  display-ribbon-on-profiles: 'prod'
 spring:
 #  devtools:
 #    restart:
