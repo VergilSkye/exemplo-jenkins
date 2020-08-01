@@ -28,13 +28,13 @@ relationship ManyToOne {
   Ticket{project(name)} to Project
   Ticket{assignedTo(login)} to User
   Ticket{reportedBy(login)} to User
-  Comment{login} to User
+  Comment{createBy(login)} to User
   Comment{ticket(title)} to Ticket
 }
 
 relationship OneToMany {
   Comment{parent} to Comment{child}
-  Ticket to Attachment 
+  Ticket to Attachment{ticket(title)} 
 }
 
 enum Status {
