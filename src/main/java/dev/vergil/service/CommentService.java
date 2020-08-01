@@ -1,7 +1,12 @@
 package dev.vergil.service;
 
+import dev.vergil.domain.Authority;
 import dev.vergil.domain.Comment;
+import dev.vergil.domain.User;
 import dev.vergil.repository.CommentRepository;
+import dev.vergil.repository.UserRepository;
+import dev.vergil.security.AuthoritiesConstants;
+import dev.vergil.security.SecurityUtils;
 import dev.vergil.service.dto.CommentDTO;
 import dev.vergil.service.mapper.CommentMapper;
 import org.slf4j.Logger;
@@ -27,9 +32,12 @@ public class CommentService {
 
     private final CommentMapper commentMapper;
 
-    public CommentService(CommentRepository commentRepository, CommentMapper commentMapper) {
+    private final UserRepository userRepository;
+
+    public CommentService(CommentRepository commentRepository, CommentMapper commentMapper, UserRepository userRepository) {
         this.commentRepository = commentRepository;
         this.commentMapper = commentMapper;
+        this.userRepository = userRepository;
     }
 
     /**
@@ -41,8 +49,21 @@ public class CommentService {
     public CommentDTO save(CommentDTO commentDTO) {
         log.debug("Request to save Comment : {}", commentDTO);
         Comment comment = commentMapper.toEntity(commentDTO);
+        setUserOnNewComment(comment);
         comment = commentRepository.save(comment);
         return commentMapper.toDto(comment);
+    }
+
+    private void setUserOnNewComment(Comment comment) {
+        if (!isAdmin()) {
+            SecurityUtils.getCurrentUserLogin()
+                .flatMap(userRepository::findOneByLogin)
+                .ifPresent(comment::setLogin);
+        }
+    }
+
+    private boolean isAdmin() {
+        return SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN);
     }
 
     /**
