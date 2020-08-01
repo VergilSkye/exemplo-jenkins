@@ -24,6 +24,9 @@
             <column name="login_id" type="bigint">
                 <constraints nullable="true" />
             </column>
+            <column name="ticket_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
             <column name="child_id" type="bigint">
                 <constraints nullable="true" />
             </column>

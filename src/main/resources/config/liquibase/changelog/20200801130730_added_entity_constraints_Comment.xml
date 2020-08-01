@@ -14,6 +14,12 @@
                                  referencedColumnNames="id"
                                  referencedTableName="jhi_user"/>
 
+        <addForeignKeyConstraint baseColumnNames="ticket_id"
+                                 baseTableName="comment"
+                                 constraintName="fk_comment_ticket_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="ticket"/>
+
         <addForeignKeyConstraint baseColumnNames="child_id"
                                  baseTableName="comment"
                                  constraintName="fk_comment_child_id"

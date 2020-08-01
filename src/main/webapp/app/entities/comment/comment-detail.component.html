@@ -20,6 +20,12 @@
                 <dd>
                     {{ comment.loginId }}
                 </dd>
+                <dt><span>Ticket</span></dt>
+                <dd>
+                    <div *ngIf="comment.ticketId">
+                        <a [routerLink]="['/ticket', comment.ticketId, 'view']">{{ comment.ticketTitle }}</a>
+                    </div>
+                </dd>
                 <dt><span>Child</span></dt>
                 <dd>
                     <div *ngIf="comment.childId">

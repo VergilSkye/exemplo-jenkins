@@ -11,8 +11,10 @@ import { IComment, Comment } from 'app/shared/model/comment.model';
 import { CommentService } from './comment.service';
 import { IUser } from 'app/core/user/user.model';
 import { UserService } from 'app/core/user/user.service';
+import { ITicket } from 'app/shared/model/ticket.model';
+import { TicketService } from 'app/entities/ticket/ticket.service';
 
-type SelectableEntity = IUser | IComment;
+type SelectableEntity = IUser | ITicket | IComment;
 
 @Component({
   selector: 'jhi-comment-update',
@@ -21,6 +23,7 @@ type SelectableEntity = IUser | IComment;
 export class CommentUpdateComponent implements OnInit {
   isSaving = false;
   users: IUser[] = [];
+  tickets: ITicket[] = [];
   comments: IComment[] = [];
 
   editForm = this.fb.group({
@@ -28,12 +31,14 @@ export class CommentUpdateComponent implements OnInit {
     date: [],
     text: [],
     loginId: [],
+    ticketId: [],
     childId: [],
   });
 
   constructor(
     protected commentService: CommentService,
     protected userService: UserService,
+    protected ticketService: TicketService,
     protected activatedRoute: ActivatedRoute,
     private fb: FormBuilder
   ) {}
@@ -49,6 +54,8 @@ export class CommentUpdateComponent implements OnInit {
 
       this.userService.query().subscribe((res: HttpResponse<IUser[]>) => (this.users = res.body || []));
 
+      this.ticketService.query().subscribe((res: HttpResponse<ITicket[]>) => (this.tickets = res.body || []));
+
       this.commentService.query().subscribe((res: HttpResponse<IComment[]>) => (this.comments = res.body || []));
     });
   }
@@ -59,6 +66,7 @@ export class CommentUpdateComponent implements OnInit {
       date: comment.date ? comment.date.format(DATE_TIME_FORMAT) : null,
       text: comment.text,
       loginId: comment.loginId,
+      ticketId: comment.ticketId,
       childId: comment.childId,
     });
   }
@@ -84,6 +92,7 @@ export class CommentUpdateComponent implements OnInit {
       date: this.editForm.get(['date'])!.value ? moment(this.editForm.get(['date'])!.value, DATE_TIME_FORMAT) : undefined,
       text: this.editForm.get(['text'])!.value,
       loginId: this.editForm.get(['loginId'])!.value,
+      ticketId: this.editForm.get(['ticketId'])!.value,
       childId: this.editForm.get(['childId'])!.value,
     };
   }

@@ -41,6 +41,10 @@ public class Comment implements Serializable {
     private User login;
 
     @ManyToOne
+    @JsonIgnoreProperties(value = "comments", allowSetters = true)
+    private Ticket ticket;
+
+    @ManyToOne
     @JsonIgnoreProperties(value = "parents", allowSetters = true)
     private Comment child;
 
@@ -115,6 +119,19 @@ public class Comment implements Serializable {
 
     public void setLogin(User user) {
         this.login = user;
+    }
+
+    public Ticket getTicket() {
+        return ticket;
+    }
+
+    public Comment ticket(Ticket ticket) {
+        this.ticket = ticket;
+        return this;
+    }
+
+    public void setTicket(Ticket ticket) {
+        this.ticket = ticket;
     }
 
     public Comment getChild() {

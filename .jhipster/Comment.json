@@ -26,6 +26,13 @@
     },
     {
       "relationshipType": "many-to-one",
+      "otherEntityName": "ticket",
+      "otherEntityRelationshipName": "comment",
+      "relationshipName": "ticket",
+      "otherEntityField": "title"
+    },
+    {
+      "relationshipType": "many-to-one",
       "otherEntityName": "comment",
       "otherEntityRelationshipName": "parent",
       "relationshipName": "child",

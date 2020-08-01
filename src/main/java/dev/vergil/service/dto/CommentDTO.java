@@ -17,6 +17,10 @@ public class CommentDTO implements Serializable {
 
     private Long loginId;
 
+    private Long ticketId;
+
+    private String ticketTitle;
+
     private Long childId;
     
     public Long getId() {
@@ -49,6 +53,22 @@ public class CommentDTO implements Serializable {
 
     public void setLoginId(Long userId) {
         this.loginId = userId;
+    }
+
+    public Long getTicketId() {
+        return ticketId;
+    }
+
+    public void setTicketId(Long ticketId) {
+        this.ticketId = ticketId;
+    }
+
+    public String getTicketTitle() {
+        return ticketTitle;
+    }
+
+    public void setTicketTitle(String ticketTitle) {
+        this.ticketTitle = ticketTitle;
     }
 
     public Long getChildId() {
@@ -84,6 +104,8 @@ public class CommentDTO implements Serializable {
             ", date='" + getDate() + "'" +
             ", text='" + getText() + "'" +
             ", loginId=" + getLoginId() +
+            ", ticketId=" + getTicketId() +
+            ", ticketTitle='" + getTicketTitle() + "'" +
             ", childId=" + getChildId() +
             "}";
     }

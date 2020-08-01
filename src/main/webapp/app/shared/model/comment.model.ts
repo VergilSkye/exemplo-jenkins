@@ -6,6 +6,8 @@ export interface IComment {
   text?: string;
   parents?: IComment[];
   loginId?: number;
+  ticketTitle?: string;
+  ticketId?: number;
   childId?: number;
 }
 
@@ -16,6 +18,8 @@ export class Comment implements IComment {
     public text?: string,
     public parents?: IComment[],
     public loginId?: number,
+    public ticketTitle?: string,
+    public ticketId?: number,
     public childId?: number
   ) {}
 }
