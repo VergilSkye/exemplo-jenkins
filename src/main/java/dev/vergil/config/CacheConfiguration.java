@@ -48,6 +48,15 @@ public class CacheConfiguration {
             createCache(cm, dev.vergil.domain.User.class.getName());
             createCache(cm, dev.vergil.domain.Authority.class.getName());
             createCache(cm, dev.vergil.domain.User.class.getName() + ".authorities");
+            createCache(cm, dev.vergil.domain.Project.class.getName());
+            createCache(cm, dev.vergil.domain.Label.class.getName());
+            createCache(cm, dev.vergil.domain.Label.class.getName() + ".tickets");
+            createCache(cm, dev.vergil.domain.Ticket.class.getName());
+            createCache(cm, dev.vergil.domain.Ticket.class.getName() + ".attachments");
+            createCache(cm, dev.vergil.domain.Ticket.class.getName() + ".labels");
+            createCache(cm, dev.vergil.domain.Attachment.class.getName());
+            createCache(cm, dev.vergil.domain.Comment.class.getName());
+            createCache(cm, dev.vergil.domain.Comment.class.getName() + ".parents");
             // jhipster-needle-ehcache-add-entry
         };
     }

@@ -1,0 +1,44 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="comment">
+            <h2><span>Comment</span> {{ comment.id }}</h2>
+
+            <hr>
+
+            <jhi-alert-error></jhi-alert-error>
+
+            <dl class="row-md jh-entity-details">
+                <dt><span>Date</span></dt>
+                <dd>
+                    <span>{{ comment.date }}</span>
+                </dd>
+                <dt><span>Text</span></dt>
+                <dd>
+                    <span>{{ comment.text }}</span>
+                </dd>
+                <dt><span>Login</span></dt>
+                <dd>
+                    {{ comment.loginId }}
+                </dd>
+                <dt><span>Child</span></dt>
+                <dd>
+                    <div *ngIf="comment.childId">
+                        <a [routerLink]="['/comment', comment.childId, 'view']">{{ comment.childId }}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/comment', comment.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+            </button>
+        </div>
+    </div>
+</div>
