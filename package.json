@@ -1,6 +1,6 @@
 {
   "name": "exemplo",
-  "version": "0.1.0",
+  "version": "0.0.1-SNAPSHOT",
   "description": "Description for exemplo",
   "private": true,
   "license": "UNLICENSED",
@@ -30,6 +30,8 @@
     "ngx-webstorage": "5.0.0",
     "rxjs": "6.5.5",
     "swagger-ui-dist": "3.25.1",
+    "sockjs-client": "1.4.0",
+    "webstomp-client": "1.2.6",
     "tslib": "2.0.0",
     "zone.js": "0.10.3"
   },
@@ -40,6 +42,7 @@
     "@openapitools/openapi-generator-cli": "1.0.13-4.3.1",
     "@types/jest": "26.0.3",
     "@types/node": "13.13.4",
+    "@types/sockjs-client": "1.1.1",
     "@typescript-eslint/eslint-plugin": "2.30.0",
     "@typescript-eslint/eslint-plugin-tslint": "2.30.0",
     "@typescript-eslint/parser": "2.30.0",
