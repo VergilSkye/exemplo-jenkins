@@ -3,6 +3,7 @@ package dev.vergil.web.rest;
 import dev.vergil.ExemploApp;
 import dev.vergil.domain.Project;
 import dev.vergil.repository.ProjectRepository;
+import dev.vergil.security.AuthoritiesConstants;
 import dev.vergil.service.ProjectService;
 import dev.vergil.service.dto.ProjectDTO;
 import dev.vergil.service.mapper.ProjectMapper;
@@ -29,7 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @SpringBootTest(classes = ExemploApp.class)
 @AutoConfigureMockMvc
-@WithMockUser
+@WithMockUser(authorities = AuthoritiesConstants.ADMIN)
 public class ProjectResourceIT {
 
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
@@ -100,6 +101,19 @@ public class ProjectResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser(authorities = AuthoritiesConstants.USER)
+    public void createProjectWithUnauthorized() throws Exception {
+        int databaseSizeBeforeCreate = projectRepository.findAll().size();
+        // Create the Project
+        ProjectDTO projectDTO = projectMapper.toDto(project);
+        restProjectMockMvc.perform(post("/api/projects")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(projectDTO)))
+            .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @Transactional
     public void createProjectWithExistingId() throws Exception {
         int databaseSizeBeforeCreate = projectRepository.findAll().size();
 
@@ -132,7 +146,7 @@ public class ProjectResourceIT {
             .andExpect(jsonPath("$.[*].id").value(hasItem(project.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)));
     }
-    
+
     @Test
     @Transactional
     public void getProject() throws Exception {
