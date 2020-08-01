@@ -50,7 +50,7 @@
                     <label class="form-control-label" for="field_ticket">Ticket</label>
                     <select class="form-control" id="field_ticket" name="ticket" formControlName="ticketId">
                         <option [ngValue]="null"></option>
-                        <option [ngValue]="ticketOption.id" *ngFor="let ticketOption of tickets; trackBy: trackById">{{ ticketOption.id }}</option>
+                        <option [ngValue]="ticketOption.id" *ngFor="let ticketOption of tickets; trackBy: trackById">{{ ticketOption.title }}</option>
                     </select>
                 </div>
             </div>

@@ -21,8 +21,8 @@
       "relationshipType": "many-to-one",
       "otherEntityName": "user",
       "otherEntityRelationshipName": "comment",
-      "relationshipName": "login",
-      "otherEntityField": "id"
+      "relationshipName": "createBy",
+      "otherEntityField": "login"
     },
     {
       "relationshipType": "many-to-one",

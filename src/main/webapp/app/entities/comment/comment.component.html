@@ -25,7 +25,7 @@
                     <th scope="col"  jhiSortBy="id"><span>ID</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"  jhiSortBy="date"><span>Date</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"  jhiSortBy="text"><span>Text</span> <fa-icon icon="sort"></fa-icon></th>
-                    <th scope="col"  jhiSortBy="loginId"><span>Login</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="createByLogin"><span>Create By</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"  jhiSortBy="ticketTitle"><span>Ticket</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"  jhiSortBy="childId"><span>Child</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"></th>
@@ -37,7 +37,7 @@
                     <td>{{ comment.date | date:'medium' }}</td>
                     <td>{{ comment.text }}</td>
                     <td>
-                        {{ comment.loginId }}
+                        {{ comment.createByLogin }}
                     </td>
                     <td>
                         <div *ngIf="comment.ticketId">

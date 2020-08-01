@@ -30,7 +30,7 @@ export class CommentUpdateComponent implements OnInit {
     id: [],
     date: [],
     text: [],
-    loginId: [],
+    createById: [],
     ticketId: [],
     childId: [],
   });
@@ -65,7 +65,7 @@ export class CommentUpdateComponent implements OnInit {
       id: comment.id,
       date: comment.date ? comment.date.format(DATE_TIME_FORMAT) : null,
       text: comment.text,
-      loginId: comment.loginId,
+      createById: comment.createById,
       ticketId: comment.ticketId,
       childId: comment.childId,
     });
@@ -91,7 +91,7 @@ export class CommentUpdateComponent implements OnInit {
       id: this.editForm.get(['id'])!.value,
       date: this.editForm.get(['date'])!.value ? moment(this.editForm.get(['date'])!.value, DATE_TIME_FORMAT) : undefined,
       text: this.editForm.get(['text'])!.value,
-      loginId: this.editForm.get(['loginId'])!.value,
+      createById: this.editForm.get(['createById'])!.value,
       ticketId: this.editForm.get(['ticketId'])!.value,
       childId: this.editForm.get(['childId'])!.value,
     };

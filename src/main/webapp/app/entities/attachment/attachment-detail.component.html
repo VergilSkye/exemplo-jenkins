@@ -22,7 +22,7 @@
                 <dt><span>Ticket</span></dt>
                 <dd>
                     <div *ngIf="attachment.ticketId">
-                        <a [routerLink]="['/ticket', attachment.ticketId, 'view']">{{ attachment.ticketId }}</a>
+                        <a [routerLink]="['/ticket', attachment.ticketId, 'view']">{{ attachment.ticketTitle }}</a>
                     </div>
                 </dd>
             </dl>

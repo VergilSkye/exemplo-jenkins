@@ -25,7 +25,7 @@
                     <th scope="col"  jhiSortBy="id"><span>ID</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"  jhiSortBy="name"><span>Name</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"  jhiSortBy="file"><span>File</span> <fa-icon icon="sort"></fa-icon></th>
-                    <th scope="col"  jhiSortBy="ticketId"><span>Ticket</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="ticketTitle"><span>Ticket</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"></th>
                 </tr>
             </thead>
@@ -39,7 +39,7 @@
                     </td>
                     <td>
                         <div *ngIf="attachment.ticketId">
-                            <a [routerLink]="['/ticket', attachment.ticketId , 'view']" >{{ attachment.ticketId }}</a>
+                            <a [routerLink]="['/ticket', attachment.ticketId , 'view']" >{{ attachment.ticketTitle }}</a>
                         </div>
                     </td>
                     <td class="text-right">

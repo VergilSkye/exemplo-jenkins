@@ -12,7 +12,8 @@ import org.mapstruct.*;
 @Mapper(componentModel = "spring", uses = {UserMapper.class, TicketMapper.class})
 public interface CommentMapper extends EntityMapper<CommentDTO, Comment> {
 
-    @Mapping(source = "login.id", target = "loginId")
+    @Mapping(source = "createBy.id", target = "createById")
+    @Mapping(source = "createBy.login", target = "createByLogin")
     @Mapping(source = "ticket.id", target = "ticketId")
     @Mapping(source = "ticket.title", target = "ticketTitle")
     @Mapping(source = "child.id", target = "childId")
@@ -20,7 +21,7 @@ public interface CommentMapper extends EntityMapper<CommentDTO, Comment> {
 
     @Mapping(target = "parents", ignore = true)
     @Mapping(target = "removeParent", ignore = true)
-    @Mapping(source = "loginId", target = "login")
+    @Mapping(source = "createById", target = "createBy")
     @Mapping(source = "ticketId", target = "ticket")
     @Mapping(source = "childId", target = "child")
     Comment toEntity(CommentDTO commentDTO);

@@ -21,7 +21,7 @@
             <column name="text" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-            <column name="login_id" type="bigint">
+            <column name="create_by_id" type="bigint">
                 <constraints nullable="true" />
             </column>
             <column name="ticket_id" type="bigint">

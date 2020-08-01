@@ -13,6 +13,7 @@ import org.mapstruct.*;
 public interface AttachmentMapper extends EntityMapper<AttachmentDTO, Attachment> {
 
     @Mapping(source = "ticket.id", target = "ticketId")
+    @Mapping(source = "ticket.title", target = "ticketTitle")
     AttachmentDTO toDto(Attachment attachment);
 
     @Mapping(source = "ticketId", target = "ticket")

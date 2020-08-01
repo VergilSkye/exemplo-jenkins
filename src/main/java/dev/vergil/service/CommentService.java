@@ -56,13 +56,13 @@ public class CommentService {
         if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) {
             getUser()
                 .ifPresent(e -> {
-                    if (comment.getLogin() == null) {
-                        comment.setLogin(e);
+                    if (comment.getCreateBy() == null) {
+                        comment.setCreateBy(e);
                     }
                 });
         } else {
             getUser()
-                .ifPresent(comment::setLogin);
+                .ifPresent(comment::setCreateBy);
         }
 
     }

@@ -19,7 +19,7 @@
       "otherEntityName": "ticket",
       "otherEntityRelationshipName": "attachment",
       "relationshipName": "ticket",
-      "otherEntityField": "id"
+      "otherEntityField": "title"
     }
   ],
   "changelogDate": "20200801130630",

@@ -14,6 +14,6 @@ import java.util.List;
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, Long> {
 
-    @Query("select comment from Comment comment where comment.login.login = ?#{principal.username}")
-    List<Comment> findByLoginIsCurrentUser();
+    @Query("select comment from Comment comment where comment.createBy.login = ?#{principal.username}")
+    List<Comment> findByCreateByIsCurrentUser();
 }

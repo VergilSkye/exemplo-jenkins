@@ -21,6 +21,8 @@ public class AttachmentDTO implements Serializable {
     private String fileContentType;
 
     private Long ticketId;
+
+    private String ticketTitle;
     
     public Long getId() {
         return id;
@@ -62,6 +64,14 @@ public class AttachmentDTO implements Serializable {
         this.ticketId = ticketId;
     }
 
+    public String getTicketTitle() {
+        return ticketTitle;
+    }
+
+    public void setTicketTitle(String ticketTitle) {
+        this.ticketTitle = ticketTitle;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -87,6 +97,7 @@ public class AttachmentDTO implements Serializable {
             ", name='" + getName() + "'" +
             ", file='" + getFile() + "'" +
             ", ticketId=" + getTicketId() +
+            ", ticketTitle='" + getTicketTitle() + "'" +
             "}";
     }
 }
