@@ -1,6 +1,5 @@
 package dev.vergil.service;
 
-import dev.vergil.domain.Authority;
 import dev.vergil.domain.Comment;
 import dev.vergil.domain.User;
 import dev.vergil.repository.CommentRepository;
@@ -11,7 +10,6 @@ import dev.vergil.service.dto.CommentDTO;
 import dev.vergil.service.mapper.CommentMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -55,16 +53,25 @@ public class CommentService {
     }
 
     private void setUserOnNewComment(Comment comment) {
-        if (!isAdmin()) {
-            SecurityUtils.getCurrentUserLogin()
-                .flatMap(userRepository::findOneByLogin)
+        if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) {
+            getUser()
+                .ifPresent(e -> {
+                    if (comment.getLogin() == null) {
+                        comment.setLogin(e);
+                    }
+                });
+        } else {
+            getUser()
                 .ifPresent(comment::setLogin);
         }
+
     }
 
-    private boolean isAdmin() {
-        return SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN);
+    private Optional<User> getUser() {
+        return SecurityUtils.getCurrentUserLogin()
+            .flatMap(userRepository::findOneByLogin);
     }
+
 
     /**
      * Get all the comments.
