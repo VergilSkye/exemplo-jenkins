@@ -27,6 +27,12 @@
                     <label class="form-control-label" for="field_description">Description</label>
                     <input type="text" class="form-control" name="description" id="field_description"
                            formControlName="description"/>
+                    <div *ngIf="editForm.get('description')!.invalid && (editForm.get('description')!.dirty || editForm.get('description')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('description')?.errors?.required">
+                        This field is required.
+                        </small>
+                    </div>
                 </div>
 
                 <div class="form-group">
@@ -37,12 +43,11 @@
                             <button type="button" class="btn btn-secondary" (click)="dueDateDp.toggle()"><fa-icon icon="calendar-alt"></fa-icon></button>
                         </span>
                     </div>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-control-label" for="field_date">Date</label>
-                    <div class="d-flex">
-                        <input id="field_date" type="datetime-local" class="form-control" name="date" formControlName="date" placeholder="YYYY-MM-DD HH:mm"/>
+                    <div *ngIf="editForm.get('dueDate')!.invalid && (editForm.get('dueDate')!.dirty || editForm.get('dueDate')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('dueDate')?.errors?.required">
+                        This field is required.
+                        </small>
                     </div>
                 </div>
 
@@ -86,9 +91,15 @@
                 <div class="form-group">
                     <label class="form-control-label" for="field_project">Project</label>
                     <select class="form-control" id="field_project" name="project" formControlName="projectId">
-                        <option [ngValue]="null"></option>
+                        <option *ngIf="!editForm.get('projectId')!.value" [ngValue]="null" selected></option>
                         <option [ngValue]="projectOption.id" *ngFor="let projectOption of projects; trackBy: trackById">{{ projectOption.name }}</option>
                     </select>
+                </div>
+                <div *ngIf="editForm.get('projectId')!.invalid && (editForm.get('projectId')!.dirty || editForm.get('projectId')!.touched)">
+                    <small class="form-text text-danger"
+                           *ngIf="editForm.get('projectId')?.errors?.required">
+                        This field is required.
+                    </small>
                 </div>
 
                 <div class="form-group">

@@ -2,6 +2,7 @@ package dev.vergil.web.rest;
 
 import dev.vergil.ExemploApp;
 import dev.vergil.domain.Comment;
+import dev.vergil.domain.Ticket;
 import dev.vergil.repository.CommentRepository;
 import dev.vergil.service.CommentService;
 import dev.vergil.service.dto.CommentDTO;
@@ -18,12 +19,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import java.time.Instant;
-import java.time.ZonedDateTime;
-import java.time.ZoneOffset;
-import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
-import static dev.vergil.web.rest.TestUtil.sameInstant;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -37,8 +35,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WithMockUser
 public class CommentResourceIT {
 
-    private static final ZonedDateTime DEFAULT_DATE = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
-    private static final ZonedDateTime UPDATED_DATE = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
+    private static final Instant DEFAULT_DATE = Instant.ofEpochMilli(0L);
+    private static final Instant UPDATED_DATE = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
     private static final String DEFAULT_TEXT = "AAAAAAAAAA";
     private static final String UPDATED_TEXT = "BBBBBBBBBB";
@@ -70,6 +68,16 @@ public class CommentResourceIT {
         Comment comment = new Comment()
             .date(DEFAULT_DATE)
             .text(DEFAULT_TEXT);
+        // Add required entity
+        Ticket ticket;
+        if (TestUtil.findAll(em, Ticket.class).isEmpty()) {
+            ticket = TicketResourceIT.createEntity(em);
+            em.persist(ticket);
+            em.flush();
+        } else {
+            ticket = TestUtil.findAll(em, Ticket.class).get(0);
+        }
+        comment.setTicket(ticket);
         return comment;
     }
     /**
@@ -82,6 +90,16 @@ public class CommentResourceIT {
         Comment comment = new Comment()
             .date(UPDATED_DATE)
             .text(UPDATED_TEXT);
+        // Add required entity
+        Ticket ticket;
+        if (TestUtil.findAll(em, Ticket.class).isEmpty()) {
+            ticket = TicketResourceIT.createUpdatedEntity(em);
+            em.persist(ticket);
+            em.flush();
+        } else {
+            ticket = TestUtil.findAll(em, Ticket.class).get(0);
+        }
+        comment.setTicket(ticket);
         return comment;
     }
 
@@ -132,6 +150,26 @@ public class CommentResourceIT {
 
     @Test
     @Transactional
+    public void checkTextIsRequired() throws Exception {
+        int databaseSizeBeforeTest = commentRepository.findAll().size();
+        // set the field null
+        comment.setText(null);
+
+        // Create the Comment, which fails.
+        CommentDTO commentDTO = commentMapper.toDto(comment);
+
+
+        restCommentMockMvc.perform(post("/api/comments")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(commentDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<Comment> commentList = commentRepository.findAll();
+        assertThat(commentList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     public void getAllComments() throws Exception {
         // Initialize the database
         commentRepository.saveAndFlush(comment);
@@ -141,7 +179,7 @@ public class CommentResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(comment.getId().intValue())))
-            .andExpect(jsonPath("$.[*].date").value(hasItem(sameInstant(DEFAULT_DATE))))
+            .andExpect(jsonPath("$.[*].date").value(hasItem(DEFAULT_DATE.toString())))
             .andExpect(jsonPath("$.[*].text").value(hasItem(DEFAULT_TEXT)));
     }
     
@@ -156,7 +194,7 @@ public class CommentResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(comment.getId().intValue()))
-            .andExpect(jsonPath("$.date").value(sameInstant(DEFAULT_DATE)))
+            .andExpect(jsonPath("$.date").value(DEFAULT_DATE.toString()))
             .andExpect(jsonPath("$.text").value(DEFAULT_TEXT));
     }
     @Test

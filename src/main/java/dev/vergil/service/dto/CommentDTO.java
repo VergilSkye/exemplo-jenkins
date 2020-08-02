@@ -1,17 +1,19 @@
 package dev.vergil.service.dto;
 
-import java.time.ZonedDateTime;
+import java.time.Instant;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 
 /**
  * A DTO for the {@link dev.vergil.domain.Comment} entity.
  */
 public class CommentDTO implements Serializable {
-    
+
     private Long id;
 
-    private ZonedDateTime date;
+    private Instant date;
 
+    @NotNull
     private String text;
 
 
@@ -24,7 +26,7 @@ public class CommentDTO implements Serializable {
     private String ticketTitle;
 
     private Long childId;
-    
+
     public Long getId() {
         return id;
     }
@@ -33,11 +35,11 @@ public class CommentDTO implements Serializable {
         this.id = id;
     }
 
-    public ZonedDateTime getDate() {
+    public Instant getDate() {
         return date;
     }
 
-    public void setDate(ZonedDateTime date) {
+    public void setDate(Instant date) {
         this.date = date;
     }
 

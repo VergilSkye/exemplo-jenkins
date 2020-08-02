@@ -3,11 +3,12 @@
   "fields": [
     {
       "fieldName": "date",
-      "fieldType": "ZonedDateTime"
+      "fieldType": "Instant"
     },
     {
       "fieldName": "text",
-      "fieldType": "String"
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
     }
   ],
   "relationships": [
@@ -28,6 +29,7 @@
       "relationshipType": "many-to-one",
       "otherEntityName": "ticket",
       "otherEntityRelationshipName": "comment",
+      "relationshipValidateRules": "required",
       "relationshipName": "ticket",
       "otherEntityField": "title"
     },

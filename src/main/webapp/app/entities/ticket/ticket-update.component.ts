@@ -32,13 +32,12 @@ export class TicketUpdateComponent implements OnInit {
   editForm = this.fb.group({
     id: [],
     title: [null, [Validators.required]],
-    description: [],
-    dueDate: [],
-    date: [],
+    description: [null, [Validators.required]],
+    dueDate: [null, [Validators.required]],
     status: [],
     type: [],
     priority: [],
-    projectId: [],
+    projectId: [null, Validators.required],
     assignedToId: [],
     reportedById: [],
     labels: [],
@@ -55,11 +54,6 @@ export class TicketUpdateComponent implements OnInit {
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ ticket }) => {
-      if (!ticket.id) {
-        const today = moment().startOf('day');
-        ticket.date = today;
-      }
-
       this.updateForm(ticket);
 
       this.projectService.query().subscribe((res: HttpResponse<IProject[]>) => (this.projects = res.body || []));
@@ -76,7 +70,6 @@ export class TicketUpdateComponent implements OnInit {
       title: ticket.title,
       description: ticket.description,
       dueDate: ticket.dueDate,
-      date: ticket.date ? ticket.date.format(DATE_TIME_FORMAT) : null,
       status: ticket.status,
       type: ticket.type,
       priority: ticket.priority,
@@ -108,7 +101,6 @@ export class TicketUpdateComponent implements OnInit {
       title: this.editForm.get(['title'])!.value,
       description: this.editForm.get(['description'])!.value,
       dueDate: this.editForm.get(['dueDate'])!.value,
-      date: this.editForm.get(['date'])!.value ? moment(this.editForm.get(['date'])!.value, DATE_TIME_FORMAT) : undefined,
       status: this.editForm.get(['status'])!.value,
       type: this.editForm.get(['type'])!.value,
       priority: this.editForm.get(['priority'])!.value,

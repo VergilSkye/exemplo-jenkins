@@ -19,10 +19,10 @@
                 <constraints nullable="false" />
             </column>
             <column name="description" type="varchar(255)">
-                <constraints nullable="true" />
+                <constraints nullable="false" />
             </column>
             <column name="due_date" type="date">
-                <constraints nullable="true" />
+                <constraints nullable="false" />
             </column>
             <column name="date" type="datetime">
                 <constraints nullable="true" />
@@ -37,7 +37,7 @@
                 <constraints nullable="true" />
             </column>
             <column name="project_id" type="bigint">
-                <constraints nullable="true" />
+                <constraints nullable="false" />
             </column>
             <column name="assigned_to_id" type="bigint">
                 <constraints nullable="true" />
@@ -87,6 +87,7 @@
             <column name="status" type="string"/>
             <column name="type" type="string"/>
             <column name="priority" type="string"/>
+            <column name="project_id" type="numeric"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>
     </changeSet>

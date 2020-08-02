@@ -1,7 +1,7 @@
 package dev.vergil.service.dto;
 
+import java.time.Instant;
 import java.time.LocalDate;
-import java.time.ZonedDateTime;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.HashSet;
@@ -20,11 +20,13 @@ public class TicketDTO implements Serializable {
     @NotNull
     private String title;
 
+    @NotNull
     private String description;
 
+    @NotNull
     private LocalDate dueDate;
 
-    private ZonedDateTime date;
+    private Instant date;
 
     private Status status;
 
@@ -78,11 +80,11 @@ public class TicketDTO implements Serializable {
         this.dueDate = dueDate;
     }
 
-    public ZonedDateTime getDate() {
+    public Instant getDate() {
         return date;
     }
 
-    public void setDate(ZonedDateTime date) {
+    public void setDate(Instant date) {
         this.date = date;
     }
 
