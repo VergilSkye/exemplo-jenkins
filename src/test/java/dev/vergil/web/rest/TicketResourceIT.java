@@ -2,6 +2,7 @@ package dev.vergil.web.rest;
 
 import dev.vergil.ExemploApp;
 import dev.vergil.domain.Ticket;
+import dev.vergil.domain.Project;
 import dev.vergil.repository.TicketRepository;
 import dev.vergil.service.TicketService;
 import dev.vergil.service.dto.TicketDTO;
@@ -24,13 +25,11 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import java.time.LocalDate;
 import java.time.Instant;
-import java.time.ZonedDateTime;
-import java.time.ZoneOffset;
 import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
-import static dev.vergil.web.rest.TestUtil.sameInstant;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.mockito.Mockito.*;
@@ -58,8 +57,8 @@ public class TicketResourceIT {
     private static final LocalDate DEFAULT_DUE_DATE = LocalDate.ofEpochDay(0L);
     private static final LocalDate UPDATED_DUE_DATE = LocalDate.now(ZoneId.systemDefault());
 
-    private static final ZonedDateTime DEFAULT_DATE = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
-    private static final ZonedDateTime UPDATED_DATE = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
+    private static final Instant DEFAULT_DATE = Instant.ofEpochMilli(0L);
+    private static final Instant UPDATED_DATE = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
     private static final Status DEFAULT_STATUS = Status.OPEN;
     private static final Status UPDATED_STATUS = Status.WAITING_FOR_RESPONSE;
@@ -108,6 +107,16 @@ public class TicketResourceIT {
             .status(DEFAULT_STATUS)
             .type(DEFAULT_TYPE)
             .priority(DEFAULT_PRIORITY);
+        // Add required entity
+        Project project;
+        if (TestUtil.findAll(em, Project.class).isEmpty()) {
+            project = ProjectResourceIT.createEntity(em);
+            em.persist(project);
+            em.flush();
+        } else {
+            project = TestUtil.findAll(em, Project.class).get(0);
+        }
+        ticket.setProject(project);
         return ticket;
     }
     /**
@@ -125,6 +134,16 @@ public class TicketResourceIT {
             .status(UPDATED_STATUS)
             .type(UPDATED_TYPE)
             .priority(UPDATED_PRIORITY);
+        // Add required entity
+        Project project;
+        if (TestUtil.findAll(em, Project.class).isEmpty()) {
+            project = ProjectResourceIT.createUpdatedEntity(em);
+            em.persist(project);
+            em.flush();
+        } else {
+            project = TestUtil.findAll(em, Project.class).get(0);
+        }
+        ticket.setProject(project);
         return ticket;
     }
 
@@ -200,6 +219,46 @@ public class TicketResourceIT {
 
     @Test
     @Transactional
+    public void checkDescriptionIsRequired() throws Exception {
+        int databaseSizeBeforeTest = ticketRepository.findAll().size();
+        // set the field null
+        ticket.setDescription(null);
+
+        // Create the Ticket, which fails.
+        TicketDTO ticketDTO = ticketMapper.toDto(ticket);
+
+
+        restTicketMockMvc.perform(post("/api/tickets")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(ticketDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<Ticket> ticketList = ticketRepository.findAll();
+        assertThat(ticketList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkDueDateIsRequired() throws Exception {
+        int databaseSizeBeforeTest = ticketRepository.findAll().size();
+        // set the field null
+        ticket.setDueDate(null);
+
+        // Create the Ticket, which fails.
+        TicketDTO ticketDTO = ticketMapper.toDto(ticket);
+
+
+        restTicketMockMvc.perform(post("/api/tickets")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(ticketDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<Ticket> ticketList = ticketRepository.findAll();
+        assertThat(ticketList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     public void getAllTickets() throws Exception {
         // Initialize the database
         ticketRepository.saveAndFlush(ticket);
@@ -212,7 +271,7 @@ public class TicketResourceIT {
             .andExpect(jsonPath("$.[*].title").value(hasItem(DEFAULT_TITLE)))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
             .andExpect(jsonPath("$.[*].dueDate").value(hasItem(DEFAULT_DUE_DATE.toString())))
-            .andExpect(jsonPath("$.[*].date").value(hasItem(sameInstant(DEFAULT_DATE))))
+            .andExpect(jsonPath("$.[*].date").value(hasItem(DEFAULT_DATE.toString())))
             .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS.toString())))
             .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE.toString())))
             .andExpect(jsonPath("$.[*].priority").value(hasItem(DEFAULT_PRIORITY.toString())));
@@ -252,7 +311,7 @@ public class TicketResourceIT {
             .andExpect(jsonPath("$.title").value(DEFAULT_TITLE))
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION))
             .andExpect(jsonPath("$.dueDate").value(DEFAULT_DUE_DATE.toString()))
-            .andExpect(jsonPath("$.date").value(sameInstant(DEFAULT_DATE)))
+            .andExpect(jsonPath("$.date").value(DEFAULT_DATE.toString()))
             .andExpect(jsonPath("$.status").value(DEFAULT_STATUS.toString()))
             .andExpect(jsonPath("$.type").value(DEFAULT_TYPE.toString()))
             .andExpect(jsonPath("$.priority").value(DEFAULT_PRIORITY.toString()));

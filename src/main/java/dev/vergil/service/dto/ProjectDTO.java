@@ -1,5 +1,6 @@
 package dev.vergil.service.dto;
 
+import javax.validation.constraints.*;
 import java.io.Serializable;
 
 /**
@@ -9,6 +10,8 @@ public class ProjectDTO implements Serializable {
     
     private Long id;
 
+    @NotNull
+    @Size(min = 3)
     private String name;
 
     

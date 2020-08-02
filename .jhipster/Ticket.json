@@ -8,15 +8,17 @@
     },
     {
       "fieldName": "description",
-      "fieldType": "String"
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
     },
     {
       "fieldName": "dueDate",
-      "fieldType": "LocalDate"
+      "fieldType": "LocalDate",
+      "fieldValidateRules": ["required"]
     },
     {
       "fieldName": "date",
-      "fieldType": "ZonedDateTime"
+      "fieldType": "Instant"
     },
     {
       "fieldName": "status",
@@ -45,6 +47,7 @@
       "relationshipType": "many-to-one",
       "otherEntityName": "project",
       "otherEntityRelationshipName": "ticket",
+      "relationshipValidateRules": "required",
       "relationshipName": "project",
       "otherEntityField": "name"
     },

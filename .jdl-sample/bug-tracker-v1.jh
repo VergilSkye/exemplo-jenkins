@@ -1,5 +1,5 @@
 entity Project {
-  name String
+  name String required minlength(3)
 }
 entity Label {
   label String required minlength(3)
@@ -7,11 +7,11 @@ entity Label {
 
 entity Ticket {
   title String required
-  description String
-  dueDate LocalDate
-  date ZonedDateTime
+  description String required
+  dueDate LocalDate required
+  date Instant
   status Status
-  type Type
+  type Type  
   priority Priority
 }
 
@@ -25,11 +25,11 @@ relationship ManyToMany {
 }
 
 relationship ManyToOne {
-  Ticket{project(name)} to Project
+  Ticket{project(name) required} to Project
   Ticket{assignedTo(login)} to User
   Ticket{reportedBy(login)} to User
   Comment{createBy(login)} to User
-  Comment{ticket(title)} to Ticket
+  Comment{ticket(title) required} to Ticket
 }
 
 relationship OneToMany {
@@ -67,8 +67,8 @@ enum Priority {
 }
 
 entity Comment {
-  date ZonedDateTime
-  text String
+  date Instant
+  text String required
 }
 
 dto * with mapstruct

@@ -135,6 +135,26 @@ public class ProjectResourceIT {
 
     @Test
     @Transactional
+    public void checkNameIsRequired() throws Exception {
+        int databaseSizeBeforeTest = projectRepository.findAll().size();
+        // set the field null
+        project.setName(null);
+
+        // Create the Project, which fails.
+        ProjectDTO projectDTO = projectMapper.toDto(project);
+
+
+        restProjectMockMvc.perform(post("/api/projects")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(projectDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<Project> projectList = projectRepository.findAll();
+        assertThat(projectList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     public void getAllProjects() throws Exception {
         // Initialize the database
         projectRepository.saveAndFlush(project);

@@ -8,8 +8,8 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 
 import java.io.Serializable;
+import java.time.Instant;
 import java.time.LocalDate;
-import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -18,6 +18,8 @@ import dev.vergil.domain.enumeration.Status;
 import dev.vergil.domain.enumeration.Type;
 
 import dev.vergil.domain.enumeration.Priority;
+import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.annotation.CreatedDate;
 
 /**
  * A Ticket.
@@ -38,14 +40,17 @@ public class Ticket implements Serializable {
     @Column(name = "title", nullable = false)
     private String title;
 
-    @Column(name = "description")
+    @NotNull
+    @Column(name = "description", nullable = false)
     private String description;
 
-    @Column(name = "due_date")
+    @NotNull
+    @Column(name = "due_date", nullable = false)
     private LocalDate dueDate;
 
-    @Column(name = "date")
-    private ZonedDateTime date;
+    @CreationTimestamp
+    @Column(name = "date", updatable = false)
+    private Instant date = Instant.now();;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
@@ -63,7 +68,8 @@ public class Ticket implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     private Set<Attachment> attachments = new HashSet<>();
 
-    @ManyToOne
+    @ManyToOne(optional = false)
+    @NotNull
     @JsonIgnoreProperties(value = "tickets", allowSetters = true)
     private Project project;
 
@@ -130,16 +136,16 @@ public class Ticket implements Serializable {
         this.dueDate = dueDate;
     }
 
-    public ZonedDateTime getDate() {
+    public Instant getDate() {
         return date;
     }
 
-    public Ticket date(ZonedDateTime date) {
+    public Ticket date(Instant date) {
         this.date = date;
         return this;
     }
 
-    public void setDate(ZonedDateTime date) {
+    public void setDate(Instant date) {
         this.date = date;
     }
 

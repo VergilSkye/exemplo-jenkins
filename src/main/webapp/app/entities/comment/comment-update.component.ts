@@ -29,9 +29,9 @@ export class CommentUpdateComponent implements OnInit {
   editForm = this.fb.group({
     id: [],
     date: [],
-    text: [],
+    text: [null, [Validators.required]],
     createById: [],
-    ticketId: [],
+    ticketId: [null, Validators.required],
     childId: [],
   });
 

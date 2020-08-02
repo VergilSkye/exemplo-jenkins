@@ -22,6 +22,12 @@
                     <label class="form-control-label" for="field_text">Text</label>
                     <input type="text" class="form-control" name="text" id="field_text"
                            formControlName="text"/>
+                    <div *ngIf="editForm.get('text')!.invalid && (editForm.get('text')!.dirty || editForm.get('text')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('text')?.errors?.required">
+                        This field is required.
+                        </small>
+                    </div>
                 </div>
 
                 <div class="form-group">
@@ -35,9 +41,15 @@
                 <div class="form-group">
                     <label class="form-control-label" for="field_ticket">Ticket</label>
                     <select class="form-control" id="field_ticket" name="ticket" formControlName="ticketId">
-                        <option [ngValue]="null"></option>
+                        <option *ngIf="!editForm.get('ticketId')!.value" [ngValue]="null" selected></option>
                         <option [ngValue]="ticketOption.id" *ngFor="let ticketOption of tickets; trackBy: trackById">{{ ticketOption.title }}</option>
                     </select>
+                </div>
+                <div *ngIf="editForm.get('ticketId')!.invalid && (editForm.get('ticketId')!.dirty || editForm.get('ticketId')!.touched)">
+                    <small class="form-text text-danger"
+                           *ngIf="editForm.get('ticketId')?.errors?.required">
+                        This field is required.
+                    </small>
                 </div>
 
                 <div class="form-group">

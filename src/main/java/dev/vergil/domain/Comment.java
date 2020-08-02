@@ -3,11 +3,14 @@ package dev.vergil.domain;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 
 import java.io.Serializable;
-import java.time.ZonedDateTime;
+import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -26,10 +29,12 @@ public class Comment implements Serializable {
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
-    @Column(name = "date")
-    private ZonedDateTime date;
+    @CreationTimestamp
+    @Column(name = "date", updatable = false)
+    private Instant date = Instant.now();;
 
-    @Column(name = "text")
+    @NotNull
+    @Column(name = "text", nullable = false)
     private String text;
 
     @OneToMany(mappedBy = "child")
@@ -40,7 +45,8 @@ public class Comment implements Serializable {
     @JsonIgnoreProperties(value = "comments", allowSetters = true)
     private User createBy;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
+    @NotNull
     @JsonIgnoreProperties(value = "comments", allowSetters = true)
     private Ticket ticket;
 
@@ -57,16 +63,16 @@ public class Comment implements Serializable {
         this.id = id;
     }
 
-    public ZonedDateTime getDate() {
+    public Instant getDate() {
         return date;
     }
 
-    public Comment date(ZonedDateTime date) {
+    public Comment date(Instant date) {
         this.date = date;
         return this;
     }
 
-    public void setDate(ZonedDateTime date) {
+    public void setDate(Instant date) {
         this.date = date;
     }
 
