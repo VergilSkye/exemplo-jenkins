@@ -57,9 +57,6 @@ public class TicketResourceIT {
     private static final LocalDate DEFAULT_DUE_DATE = LocalDate.ofEpochDay(0L);
     private static final LocalDate UPDATED_DUE_DATE = LocalDate.now(ZoneId.systemDefault());
 
-    private static final Instant DEFAULT_DATE = Instant.ofEpochMilli(0L);
-    private static final Instant UPDATED_DATE = Instant.now().truncatedTo(ChronoUnit.MILLIS);
-
     private static final Status DEFAULT_STATUS = Status.OPEN;
     private static final Status UPDATED_STATUS = Status.WAITING_FOR_RESPONSE;
 
@@ -103,7 +100,6 @@ public class TicketResourceIT {
             .title(DEFAULT_TITLE)
             .description(DEFAULT_DESCRIPTION)
             .dueDate(DEFAULT_DUE_DATE)
-            .date(DEFAULT_DATE)
             .status(DEFAULT_STATUS)
             .type(DEFAULT_TYPE)
             .priority(DEFAULT_PRIORITY);
@@ -130,7 +126,6 @@ public class TicketResourceIT {
             .title(UPDATED_TITLE)
             .description(UPDATED_DESCRIPTION)
             .dueDate(UPDATED_DUE_DATE)
-            .date(UPDATED_DATE)
             .status(UPDATED_STATUS)
             .type(UPDATED_TYPE)
             .priority(UPDATED_PRIORITY);
@@ -170,7 +165,6 @@ public class TicketResourceIT {
         assertThat(testTicket.getTitle()).isEqualTo(DEFAULT_TITLE);
         assertThat(testTicket.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
         assertThat(testTicket.getDueDate()).isEqualTo(DEFAULT_DUE_DATE);
-        assertThat(testTicket.getDate()).isEqualTo(DEFAULT_DATE);
         assertThat(testTicket.getStatus()).isEqualTo(DEFAULT_STATUS);
         assertThat(testTicket.getType()).isEqualTo(DEFAULT_TYPE);
         assertThat(testTicket.getPriority()).isEqualTo(DEFAULT_PRIORITY);
@@ -271,12 +265,11 @@ public class TicketResourceIT {
             .andExpect(jsonPath("$.[*].title").value(hasItem(DEFAULT_TITLE)))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
             .andExpect(jsonPath("$.[*].dueDate").value(hasItem(DEFAULT_DUE_DATE.toString())))
-            .andExpect(jsonPath("$.[*].date").value(hasItem(DEFAULT_DATE.toString())))
             .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS.toString())))
             .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE.toString())))
             .andExpect(jsonPath("$.[*].priority").value(hasItem(DEFAULT_PRIORITY.toString())));
     }
-    
+
     @SuppressWarnings({"unchecked"})
     public void getAllTicketsWithEagerRelationshipsIsEnabled() throws Exception {
         when(ticketServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
@@ -311,7 +304,6 @@ public class TicketResourceIT {
             .andExpect(jsonPath("$.title").value(DEFAULT_TITLE))
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION))
             .andExpect(jsonPath("$.dueDate").value(DEFAULT_DUE_DATE.toString()))
-            .andExpect(jsonPath("$.date").value(DEFAULT_DATE.toString()))
             .andExpect(jsonPath("$.status").value(DEFAULT_STATUS.toString()))
             .andExpect(jsonPath("$.type").value(DEFAULT_TYPE.toString()))
             .andExpect(jsonPath("$.priority").value(DEFAULT_PRIORITY.toString()));
@@ -340,7 +332,6 @@ public class TicketResourceIT {
             .title(UPDATED_TITLE)
             .description(UPDATED_DESCRIPTION)
             .dueDate(UPDATED_DUE_DATE)
-            .date(UPDATED_DATE)
             .status(UPDATED_STATUS)
             .type(UPDATED_TYPE)
             .priority(UPDATED_PRIORITY);
@@ -358,7 +349,6 @@ public class TicketResourceIT {
         assertThat(testTicket.getTitle()).isEqualTo(UPDATED_TITLE);
         assertThat(testTicket.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
         assertThat(testTicket.getDueDate()).isEqualTo(UPDATED_DUE_DATE);
-        assertThat(testTicket.getDate()).isEqualTo(UPDATED_DATE);
         assertThat(testTicket.getStatus()).isEqualTo(UPDATED_STATUS);
         assertThat(testTicket.getType()).isEqualTo(UPDATED_TYPE);
         assertThat(testTicket.getPriority()).isEqualTo(UPDATED_PRIORITY);

@@ -35,9 +35,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WithMockUser
 public class CommentResourceIT {
 
-    private static final Instant DEFAULT_DATE = Instant.ofEpochMilli(0L);
-    private static final Instant UPDATED_DATE = Instant.now().truncatedTo(ChronoUnit.MILLIS);
-
     private static final String DEFAULT_TEXT = "AAAAAAAAAA";
     private static final String UPDATED_TEXT = "BBBBBBBBBB";
 
@@ -66,7 +63,6 @@ public class CommentResourceIT {
      */
     public static Comment createEntity(EntityManager em) {
         Comment comment = new Comment()
-            .date(DEFAULT_DATE)
             .text(DEFAULT_TEXT);
         // Add required entity
         Ticket ticket;
@@ -88,7 +84,6 @@ public class CommentResourceIT {
      */
     public static Comment createUpdatedEntity(EntityManager em) {
         Comment comment = new Comment()
-            .date(UPDATED_DATE)
             .text(UPDATED_TEXT);
         // Add required entity
         Ticket ticket;
@@ -123,7 +118,6 @@ public class CommentResourceIT {
         List<Comment> commentList = commentRepository.findAll();
         assertThat(commentList).hasSize(databaseSizeBeforeCreate + 1);
         Comment testComment = commentList.get(commentList.size() - 1);
-        assertThat(testComment.getDate()).isEqualTo(DEFAULT_DATE);
         assertThat(testComment.getText()).isEqualTo(DEFAULT_TEXT);
     }
 
@@ -179,10 +173,9 @@ public class CommentResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(comment.getId().intValue())))
-            .andExpect(jsonPath("$.[*].date").value(hasItem(DEFAULT_DATE.toString())))
             .andExpect(jsonPath("$.[*].text").value(hasItem(DEFAULT_TEXT)));
     }
-    
+
     @Test
     @Transactional
     public void getComment() throws Exception {
@@ -194,7 +187,6 @@ public class CommentResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(comment.getId().intValue()))
-            .andExpect(jsonPath("$.date").value(DEFAULT_DATE.toString()))
             .andExpect(jsonPath("$.text").value(DEFAULT_TEXT));
     }
     @Test
@@ -218,7 +210,6 @@ public class CommentResourceIT {
         // Disconnect from session so that the updates on updatedComment are not directly saved in db
         em.detach(updatedComment);
         updatedComment
-            .date(UPDATED_DATE)
             .text(UPDATED_TEXT);
         CommentDTO commentDTO = commentMapper.toDto(updatedComment);
 
@@ -231,7 +222,6 @@ public class CommentResourceIT {
         List<Comment> commentList = commentRepository.findAll();
         assertThat(commentList).hasSize(databaseSizeBeforeUpdate);
         Comment testComment = commentList.get(commentList.size() - 1);
-        assertThat(testComment.getDate()).isEqualTo(UPDATED_DATE);
         assertThat(testComment.getText()).isEqualTo(UPDATED_TEXT);
     }
 
